@@ -29,12 +29,12 @@ env:
 jobs:
   release:
     name: Release
-    runs-on: ubuntu-latest-m
+    runs-on: ubuntu-latest
     env:
       DOCKER_CLI_EXPERIMENTAL: "enabled"
     permissions:
       id-token: write # For cosign
-      contents: read  # Not required for public repositories, but for clarity
+      contents: write  # Not required for public repositories, but for clarity
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
@@ -65,7 +65,7 @@ jobs:
           version: v2.1.0
           args: release -f=${{ inputs.goreleaser_config}} ${{ inputs.goreleaser_options}}
         env:
-          GITHUB_TOKEN: ${{ secrets.ORG_REPO_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TMPDIR: "tmp"
 
       # Push images to registries (only for canary build)
